@@ -48,12 +48,12 @@ Mac: `cmd`+`shift`+`p`
 
 Performs appropriate escaping with the following scenarios (where `|` is the cursor position):
 
-* Cursor within template literal: `const test = \`|\`;`
+* Cursor within template literal: ```const test = `|`;```
 * Cursor within double quotes: `const test = "|";`
 * Cursor within single quotes: `const test = '|';`
 * Cursor within a literal regular expression: `const test = /|/g;`
 * Cursor within a single-line comment: `const test = 123; // |`
-* Cursor within a multi-line comment: `const test = /* | */ 123;
+* Cursor within a multi-line comment: `const test = /* | */ 123;`
 * Cursor anywhere else in code (no escaping)
 
 ## How it works
