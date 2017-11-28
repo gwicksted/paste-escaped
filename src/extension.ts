@@ -31,7 +31,6 @@ const pasteEscaped = async (editor: TextEditor): Promise<void> => {
 
     const mode: number = tscontext.getTypeScriptContext(editor.document, start, selectionEnd);
 
-    // extensionHostProcess logs "Edits from command pasteEscaped.action were not applied." here
     await commands.executeCommand("editor.action.clipboardPasteAction");
 
     // paste will extend the cursor end position to the end of the pasted text
