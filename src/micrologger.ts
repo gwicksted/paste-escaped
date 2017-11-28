@@ -21,18 +21,18 @@ type Logger = (message: string) => void;
 const loggerFor = (level: keyof typeof levels): Logger => {
     switch (level) {
         case "trace":
-            return (message: string): void => console.trace(message);
+            return (message: string): void => { if (levels.trace) { console.log(message); } };
         case "debug":
-        return (message: string): void => console.debug(message);
+        return (message: string): void => { if (levels.debug) { console.log(message); } };
         case "info":
-            return (message: string): void => console.info(message);
+            return (message: string): void => { if (levels.info) { console.log(message); } };
         case "warn":
-            return (message: string): void => console.warn(message);
+            return (message: string): void => { if (levels.warn) { console.log(message); } };
         case "error":
         case "fatal":
-            return (message: string): void => console.error(message);
+            return (message: string): void => { if (levels.error) { console.log(message); } };
         default:
-            return (message: string): void => console.log(message);
+            return (message: string): void => { if (levels.log) { console.log(message); } };
     }
 };
 // tslint:enable:no-console

@@ -3,6 +3,7 @@
 import * as tscontext from "./tscontext";
 import * as tsescape from "./tsescape";
 import * as log from "./micrologger";
+import * as vscode from "vscode";
 import { commands, workspace, TextEditor, Selection, TextEditorEdit, Range, ExtensionContext, Disposable } from "vscode";
 import { Replacement } from "./tsescape";
 import { bestValue, cursorStart, cursorEnd } from "./utils";
@@ -74,8 +75,10 @@ export const activate = (context: ExtensionContext): void => {
     log.setExtensionName("paste-escaped");
     log.debug("Activated");
 
-    disposables.push(commands.registerTextEditorCommand("pasteEscaped.action", async (editor: TextEditor): Promise<void> => {
-        await pasteEscaped(editor);
+    disposables.push(commands.registerCommand("pasteEscaped.action", (): void => {
+        pasteEscaped(vscode.window.activeTextEditor).then((): void => {
+            log.trace("escaped paste");
+        });
     }));
 
     context.subscriptions.concat(disposables);

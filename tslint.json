@@ -248,6 +248,7 @@
     "no-namespace": true,
     //"no-magic-numbers": true,
     "no-import-side-effect": true,
-    "adjacent-overload-signatures": true
+    "adjacent-overload-signatures": true,
+    "no-implicit-dependencies": false
   }
 }
