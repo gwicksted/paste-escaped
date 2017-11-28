@@ -4,7 +4,7 @@ VSCode Semantic Paste into **TypeScript** code with proper escaping based on whe
 
 ![paste-escaped][logo]
 
-[logo]: /paste.png?raw=true "Paste Escaped"
+[logo]: https://github.com/gwicksted/paste-escaped/blob/master/paste.png?raw=true "Paste Escaped"
 
 ## Install
 
