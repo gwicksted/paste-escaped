@@ -75,7 +75,7 @@ const abc = ``;
 
 ```TypeScript
 const abc = `<text property="${donteval}" folder="C:\temp"/>
-<name first='John`s' last="Tools"/>`
+<name first='John`s' last="Tools"/>`;
 ```
 
 * Considers `${donteval}` a template variable (may not be intentional)
@@ -85,7 +85,7 @@ const abc = `<text property="${donteval}" folder="C:\temp"/>
 ### Result (with extension) :thumbsup:
 
 ```TypeScript
-const abc = `<text property="$${donteval}" folder="C:\\temp"/>
+const abc = `<text property="\${donteval}" folder="C:\\temp"/>
 <name first='John\`s' last="Tools"/>`;
 ```
 
