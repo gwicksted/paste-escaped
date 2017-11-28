@@ -1,74 +1,74 @@
 {
-  "name": "paste-escaped",
-  "displayName": "Paste Escaped",
-  "version": "0.0.0-development",
-  "publisher": "gwicksted",
-  "description": "Paste into TypeScript code with escapes based on cursor position",
-  "author": {
-    "name": "Graeme Wicksted"
-  },
-  "categories": [
-    "Formatters",
-    "Other"
-  ],
-  "icon": "paste.png",
-  "galleryBanner": {
-    "color": "#f5f5f5",
-    "theme": "light"
-  },
-  "engines": {
-    "vscode": "^1.0.0",
-    "node": ">=8.0.0",
-    "npm": ">=5.3.0"
-  },
-  "activationEvents": [
-    "onLanguage:typescript",
-    "onCommand:pasteEscaped.action"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gwicksted/paste-escaped.git"
-  },
-  "bugs": {
-    "url": "https://github.com/gwicksted/paste-escaped/issues"
-  },
-  "homepage": "https://github.com/gwicksted/paste-escaped/README.md",
-  "main": "./out/src/extension",
-  "license": "SEE LICENSE IN LICENSE",
-  "contributes": {
-    "commands": [
-      {
-        "command": "pasteEscaped.action",
-        "title": "Escape",
-        "category": "Paste"
-      }
+    "name": "paste-escaped",
+    "displayName": "Paste Escaped",
+    "version": "0.0.1",
+    "publisher": "gwicksted",
+    "description": "Paste into TypeScript code with escapes based on cursor position",
+    "author": {
+        "name": "Graeme Wicksted"
+    },
+    "categories": [
+        "Formatters",
+        "Other"
     ],
-    "keybindings": [
-      {
-        "key": "ctrl+shift+v",
-        "mac": "cmd+shift+v",
-        "win": "ctrl+shift+v",
-        "linux": "ctrl+shift+v",
-        "command": "pasteEscaped.action",
-        "when": "editorTextFocus && !editorReadonly && !editorHasMultipleSelections"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "vsix": "vsce package",
-    "watch": "tsc -watch -p ./",
-    "compile": "tsc -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "tslint": "tslint -p . -c tslint.json src/*.ts --"
-  },
-  "devDependencies": {
-    "@types/node": "^8.0.53",
-    "eslint": "^4.12.0",
-    "tslint": "^5.6.0",
-    "vscode": "^1.1.8"
-  },
-  "dependencies": {
-    "typescript": "^2.6.2"
-  }
+    "icon": "paste.png",
+    "galleryBanner": {
+        "color": "#f5f5f5",
+        "theme": "light"
+    },
+    "engines": {
+        "vscode": "^1.0.0",
+        "node": ">=8.0.0",
+        "npm": ">=5.3.0"
+    },
+    "activationEvents": [
+        "onLanguage:typescript",
+        "onCommand:pasteEscaped.action"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gwicksted/paste-escaped.git"
+    },
+    "bugs": {
+        "url": "https://github.com/gwicksted/paste-escaped/issues"
+    },
+    "homepage": "https://github.com/gwicksted/paste-escaped/README.md",
+    "main": "./out/src/extension",
+    "license": "SEE LICENSE IN LICENSE",
+    "contributes": {
+        "commands": [
+            {
+                "command": "pasteEscaped.action",
+                "title": "Escape",
+                "category": "Paste"
+            }
+        ],
+        "keybindings": [
+            {
+                "key": "ctrl+shift+v",
+                "mac": "cmd+shift+v",
+                "win": "ctrl+shift+v",
+                "linux": "ctrl+shift+v",
+                "command": "pasteEscaped.action",
+                "when": "editorTextFocus && !editorReadonly && !editorHasMultipleSelections"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "vsix": "vsce package",
+        "watch": "tsc -watch -p ./",
+        "compile": "tsc -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "tslint": "tslint -p . -c tslint.json src/*.ts --"
+    },
+    "devDependencies": {
+        "@types/node": "^8.0.53",
+        "eslint": "^4.12.0",
+        "tslint": "^5.6.0",
+        "vscode": "^1.1.8"
+    },
+    "dependencies": {
+        "typescript": "^2.6.2"
+    }
 }
