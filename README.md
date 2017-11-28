@@ -81,7 +81,7 @@ const def = "<text property=\"${donteval}\" path=\"C:\\temp\"/>\n<name first='Jo
 # License
 
 * All code - [MIT](LICENSE)
-* `paste-icon.png` - [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/) see below for attribution.
+* `paste-icon.png` - [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) see below for attribution.
 
 # Icon
 
