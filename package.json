@@ -1,7 +1,7 @@
 {
     "name": "paste-escaped",
     "displayName": "TypeScript Semantic Paste",
-    "version": "0.0.2",
+    "version": "1.0.0",
     "publisher": "gwicksted",
     "description": "Escapes pasted text based on where the cursor is positioned",
     "author": {
@@ -17,7 +17,7 @@
         "theme": "light"
     },
     "engines": {
-        "vscode": "^1.0.0",
+        "vscode": "^1.1.8",
         "node": ">=8.0.0",
         "npm": ">=5.3.0"
     },

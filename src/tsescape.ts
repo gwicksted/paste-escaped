@@ -1,94 +1,57 @@
 "use strict";
 
-import * as vscode from "vscode";
 import * as tscontext from "./tscontext";
 
-export class Replacement {
-    constructor(public readonly end: vscode.Position, public readonly replacement: string) {
-
-    }
-}
-
-const escapeDoubleQuoted = (text: string, start: vscode.Position): Replacement => {
-    let endCharacter: number = start.character;
-    const replacement = text.replace(/["\\\n]|\r\n|./g, (match: string): string => {
+const escapeDoubleQuoted = (text: string): string => {
+    return text.replace(/["\\\n\r]/g, (match: string): string => {
         switch (match) {
             case "\"":
-                endCharacter += 2;
                 return "\\\"";
             case "\\":
-                endCharacter += 2;
                 return "\\\\";
-            case "\r\n":
-                endCharacter += 4;
-                return "\\r\\n";
+            case "\r":
+                return "\\r";
             case "\n":
-                endCharacter += 2;
                 return "\\n";
             default:
-                endCharacter++;
-                return match;
+                throw new Error(`Unexpected match '${match}'`);
         }
     });
-
-    return new Replacement(new vscode.Position(start.line, endCharacter), replacement);
 };
 
-const escapeQuoted = (text: string, start: vscode.Position): Replacement => {
-    let endCharacter: number = start.character;
-    const replacement = text.replace(/['\\\n]|\r\n|./g, (match: string): string => {
+const escapeQuoted = (text: string): string => {
+    return text.replace(/['\\\n\r]/g, (match: string): string => {
         switch (match) {
             case "'":
-                endCharacter += 2;
                 return "\\'";
             case "\\":
-                endCharacter += 2;
                 return "\\\\";
-            case "\r\n":
-                endCharacter += 4;
-                return "\\r\\n";
+            case "\r":
+                return "\\r";
             case "\n":
-                endCharacter += 2;
                 return "\\n";
             default:
-                endCharacter++;
-                return match;
+                throw new Error(`Unexpected match '${match}'`);
         }
     });
-
-    return new Replacement(new vscode.Position(start.line, endCharacter), replacement);
 };
 
-const escapeTemplateLiteral = (text: string, start: vscode.Position): Replacement => {
-    let endCharacter = start.character;
-    let endLine = start.line;
-
-    const replacement = text.replace(/[`$\\\n]|\r\n|./g, (match: string): string => {
+const escapeTemplateLiteral = (text: string): string => {
+    return text.replace(/[`$\\]/g, (match: string): string => {
         switch (match) {
             case "`":
-                endCharacter += 2;
                 return "\\`";
             case "$":
-                endCharacter += 2;
                 return "\\$"; // or "$$" also valid (but that has intellisense issue with $${})
             case "\\":
-                endCharacter += 2;
                 return "\\\\";
-            case "\n":
-            case "\r\n":
-                endCharacter = 0;
-                endLine++;
-                return "\n"; // actual line endings normalized by edit.replace later
             default:
-                endCharacter++;
                 return match;
         }
     });
-
-    return new Replacement(new vscode.Position(endLine, endCharacter), replacement);
 };
 
-const escapeRegularExpressionLiteral = (text: string, start: vscode.Position): Replacement => {
+const escapeRegularExpressionLiteral = (text: string): string => {
     // TODO: contextual escaping
     // context = character group:
     //   beginning of expression (if first char) ^
@@ -109,41 +72,29 @@ const escapeRegularExpressionLiteral = (text: string, start: vscode.Position): R
     // what about collapsing whitespace into \s+ or \s* (convenience setting)
     // what about trimming leading/trailing whitespace (convenience setting)
 
-    let endCharacter = start.character;
-
-    const replacement = text.replace(/([-\/\\^$*+?.()|[\]{}\n])|\r\n|./g, (match: string, group1: string): string => {
+    return text.replace(/[-\/\\^$*+?.()|[\]{}\n\r]/g, (match: string): string => {
         switch (match) {
-            case "\r\n":
-                endCharacter += 4;
-                return "\\r\\n";
+            case "\r":
+                return "\\r";
             case "\n":
-                endCharacter += 2;
                 return "\\n";
             default:
-                if (typeof group1 === "string" && group1.length === 1) {
-                    endCharacter += 2;
-                    return "\\" + match;
-                }
-
-                endCharacter++;
-                return match;
+                return "\\" + match;
         }
     });
-
-    return new Replacement(new vscode.Position(start.line, endCharacter), replacement);
 };
 
-export const escape = (text: string, start: vscode.Position, mode: tscontext.Context): Replacement => {
+export const escape = (text: string, mode: tscontext.Context): string => {
     switch (mode) {
         case tscontext.Context.quote:
-            return escapeQuoted(text, start);
+            return escapeQuoted(text);
         case tscontext.Context.doubleQuote:
-            return escapeDoubleQuoted(text, start);
+            return escapeDoubleQuoted(text);
         // aka template literals or string interpolation
         case tscontext.Context.backQuote:
-            return escapeTemplateLiteral(text, start);
+            return escapeTemplateLiteral(text);
         case tscontext.Context.regularExpression:
-            return escapeRegularExpressionLiteral(text, start);
+            return escapeRegularExpressionLiteral(text);
         default:
             // intentionally does not reformat sub-fragments as existing code is likely already escaped
             // same if the pasted code contains surrounding quote marks

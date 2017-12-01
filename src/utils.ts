@@ -12,20 +12,36 @@ export const cursorEnd = (selection: Selection): Position => {
                 : selection.active;
 };
 
-export type MaybeBoolean = boolean | undefined;
+export const getEnd = (appendedText: string, start: Position): Position => {
+    if (!appendedText || appendedText.length === 0) {
+        return start;
+    }
 
-export const coalesce = (...args: MaybeBoolean[]): boolean => {
+    const lastLine = appendedText.lastIndexOf("\n");
+
+    if (lastLine === -1) {
+        return new Position(start.line, start.character + appendedText.length);
+    }
+
+    const lines: number = (appendedText.match(/[\n]/g) || []).length;
+
+    return new Position(start.line + lines, appendedText.length - (lastLine + 1));
+};
+
+export type Maybe<T> = T | undefined;
+
+export const coalesce = <T>(ctor: { new(): T; } , ...args: Maybe<T>[]): T => {
     for (const arg of args) {
-        if (typeof arg === "boolean") {
+        if (arg !== undefined) {
             return arg;
         }
     }
 
-    return false;
+    return new ctor();
 };
 
-export const bestValue = (section: string, key: string): boolean => {
+export const bestValue = <T>(ctor: { new(): T; }, section: string, key: string): T => {
     const config = workspace.getConfiguration(section);
     const setting = config.inspect(key);
-    return coalesce(setting.workspaceValue, setting.workspaceFolderValue, setting.globalValue, setting.defaultValue);
+    return coalesce(ctor, setting.workspaceValue, setting.workspaceFolderValue, setting.globalValue, setting.defaultValue);
 };

@@ -5,12 +5,13 @@ import * as tsescape from "./tsescape";
 import * as log from "./micrologger";
 import * as vscode from "vscode";
 import { commands, workspace, TextEditor, TextDocument, Selection, TextEditorEdit, Range, ExtensionContext, Disposable } from "vscode";
-import { Replacement } from "./tsescape";
-import { bestValue, cursorStart, cursorEnd } from "./utils";
+import { bestValue, cursorStart, cursorEnd, getEnd } from "./utils";
 
 interface IConfig {
     readonly formatOnPaste: boolean;
     readonly selectAfter: boolean;
+    readonly typeScript: string;
+    readonly resolvedTypeScript: string;
 }
 
 const getConfig = (): IConfig => {
@@ -18,8 +19,10 @@ const getConfig = (): IConfig => {
 
     return {
         // editor.formatOnPaste currently is not able to be accessed without inspect? (otherwise gets an error)
-        formatOnPaste: bestValue("editor", "formatOnPaste"),
-        selectAfter: config.get("selectAfter", true)
+        formatOnPaste: bestValue(Boolean, "editor", "formatOnPaste") as boolean,
+        selectAfter: config.get("selectAfter", true),
+        typeScript: bestValue(String, "typescript", "tsdk") as string,
+        resolvedTypeScript: require.resolve("typescript")
     };
 };
 
@@ -61,10 +64,10 @@ const pasteEscaped = async (editor: TextEditor): Promise<void> => {
     const end = cursorEnd(editor.selection);
     const range: Range = new Range(start, end);
 
-    let replace: Replacement;
+    let replace: string;
 
     try {
-        replace = tsescape.escape(document.getText(range), start, mode);
+        replace = tsescape.escape(document.getText(range), mode);
     } catch (e) {
         // paste already occurred normally, leave it at that.
         replace = undefined;
@@ -73,10 +76,12 @@ const pasteEscaped = async (editor: TextEditor): Promise<void> => {
 
     if (replace) {
         await editor.edit((edit: TextEditorEdit): void => {
-            edit.replace(range, replace.replacement);
+            edit.replace(range, replace);
         });
 
-        editor.selection = new Selection(start.line, start.character, replace.end.line, replace.end.character);
+        const replacementEnd = getEnd(replace, start);
+
+        editor.selection = new Selection(start.line, start.character, replacementEnd.line, replacementEnd.character);
     }
 
     if (((mode === tscontext.Context.code) || !replace) && cfg.formatOnPaste && cfg.selectAfter) {
