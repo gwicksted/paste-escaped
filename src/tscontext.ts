@@ -32,7 +32,7 @@ export const getTypeScriptContext = (document: vscode.TextDocument, start: vscod
         code = (offset > 0 ? code.substring(0, offset) : "") + (selectionEnd > offset ? code.substring(selectionEnd) : "");
     }
 
-    const source = ts.createSourceFile(document.fileName, code, ts.ScriptTarget.Latest, true);
+    const source = ts.createSourceFile(document.fileName, code, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
 
     // hide your eyes!  This is not a public API.
     const internals: TypeScriptInternals = (ts as any as TypeScriptInternals);

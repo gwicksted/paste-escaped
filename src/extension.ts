@@ -4,7 +4,7 @@ import * as tscontext from "./tscontext";
 import * as tsescape from "./tsescape";
 import * as log from "./micrologger";
 import * as vscode from "vscode";
-import { commands, workspace, TextEditor, Selection, TextEditorEdit, Range, ExtensionContext, Disposable } from "vscode";
+import { commands, workspace, TextEditor, TextDocument, Selection, TextEditorEdit, Range, ExtensionContext, Disposable } from "vscode";
 import { Replacement } from "./tsescape";
 import { bestValue, cursorStart, cursorEnd } from "./utils";
 
@@ -23,7 +23,31 @@ const getConfig = (): IConfig => {
     };
 };
 
+const isTypeScript = (document: TextDocument): boolean => {
+    return document.languageId === "typescript" || document.languageId === "typescriptreact";
+};
+
 const pasteEscaped = async (editor: TextEditor): Promise<void> => {
+    const document = editor.document;
+
+    // TODO: look at vscode.executeFormatDocumentProvider
+    // vscode.executeHoverProvider
+    // vscode.executeDocumentSymbolProvider
+    // const symbols: vscode.SymbolInformation[] =
+    //        ((await vscode.commands.executeCommand("vscode.executeDocumentSymbolProvider", "uriofdocument")) as any as vscode.SymbolInformation[]);
+
+    // TODO: consider editor.options.insertSpaces and editor.options.tabSize
+
+    // TODO: use typescript.tsdk setting instead of bundling typescript
+    // TODO: set ts.ScriptTarget based on tsconfig.json
+    // TODO: use language services to reparse the source quickly -- is the AST available somehow?
+    // ^ look at languages.registerHoverProvider
+
+    if (!isTypeScript(document)) {
+        await commands.executeCommand("editor.action.clipboardPasteAction");
+        return;
+    }
+
     const cfg = getConfig();
 
     const start = cursorStart(editor.selection);
@@ -36,12 +60,11 @@ const pasteEscaped = async (editor: TextEditor): Promise<void> => {
     // paste will extend the cursor end position to the end of the pasted text
     const end = cursorEnd(editor.selection);
     const range: Range = new Range(start, end);
-    const text: string = editor.document.getText(range);
 
     let replace: Replacement;
 
     try {
-        replace = tsescape.escape(text, start, mode);
+        replace = tsescape.escape(document.getText(range), start, mode);
     } catch (e) {
         // paste already occurred normally, leave it at that.
         replace = undefined;

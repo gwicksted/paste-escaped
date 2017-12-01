@@ -1,6 +1,8 @@
 # Paste Escaped
 
-VSCode Semantic Paste into **TypeScript** code with proper escaping based on where the caret is positioned.
+TypeScript Semantic Paste
+
+_(escapes pasted text based on where the cursor is positioned)_
 
 ![paste-escaped][logo]
 
@@ -8,9 +10,9 @@ VSCode Semantic Paste into **TypeScript** code with proper escaping based on whe
 
 ## Install
 
-Windows / Linux: `ctrl`+`shift`+`x`
-
-Mac: `cmd`+`shift`+`x`
+| Windows / Linux    | Mac               |
+| ------------------ | ----------------- |
+| `ctrl`+`shift`+`x` | `cmd`+`shift`+`x` |
 
 * Type `Paste`
 * Find `Paste Escaped`
@@ -21,15 +23,15 @@ Mac: `cmd`+`shift`+`x`
 
 ### Paste with semantic escaping (TypeScript files only)
 
-Windows / Linux: `ctrl`+`shift`+`v`
-
-Mac: `cmd`+`shift`+`v`
+| Windows / Linux    | Mac               |
+| ------------------ | ----------------- |
+| `ctrl`+`shift`+`v` | `cmd`+`shift`+`v` |
 
 ### Undo semantic escaping
 
-Windows / Linux: `ctrl`+`z`
-
-Mac: `cmd`+`z`
+| Windows / Linux    | Mac              |
+| ------------------ | ---------------- |
+| `ctrl`+`z`         | `cmd`+`z`        |
 
 * Press once to undo the _escaping_ (leaving you with the raw clipboard text).
 
@@ -37,28 +39,37 @@ Mac: `cmd`+`z`
 
 ### Command Pallette
 
-Windows / Linux: `ctrl`+`shift`+`p`
 
-Mac: `cmd`+`shift`+`p`
+| Windows / Linux    | Mac               |
+| ------------------ | ----------------- |
+| `ctrl`+`shift`+`p` | `cmd`+`shift`+`p` |
 
 * Type `Paste`
 * Select the option `Paste: Escaped`
 
 ## Features
 
-Performs appropriate escaping with the following scenarios (where `|` is the cursor position):
+Escapes clipboard text in the following scenarios with `|` being the cursor position:
 
-* Cursor within template literal: ```const test = `|`;```
-* Cursor within double quotes: `const test = "|";`
-* Cursor within single quotes: `const test = '|';`
-* Cursor within a literal regular expression: `const test = /|/g;`
-* Cursor within a single-line comment: `const test = 123; // |`
-* Cursor within a multi-line comment: `const test = /* | */ 123;`
-* Cursor anywhere else in code (no escaping)
+:heavy_check_mark: ```const test = `|`;```
+
+:heavy_check_mark: `const test = "|";`
+
+:heavy_check_mark: `const test = '|';`
+
+:heavy_check_mark: `const test = /|/g;`
+
+:heavy_check_mark: `const test = 123; // |`
+
+:heavy_check_mark: `const test = /* | */ 123;`
+
+:ok_hand: `any.other.code |` (no escaping)
 
 ## How it works
 
-Example text in clipboard:
+Text in clipboard:
+
+:clipboard:
 
 ```xml
 <text property="${donteval}" folder="C:\temp"/>
@@ -78,9 +89,11 @@ const abc = `<text property="${donteval}" folder="C:\temp"/>
 <name first='John`s' last="Tools"/>`;
 ```
 
-* Considers `${donteval}` a template variable (may not be intentional)
-* Replaces `\t` in the `C:\\temp` path with a literal `TAB`
-* Breaks the string immediately following `John` causing compilation errors
+:warning: Considers `${donteval}` a template variable (may not be intentional)
+
+:heavy_multiplication_x: Replaces `\t` in the `C:\\temp` path with a literal `TAB`
+
+:heavy_multiplication_x: Breaks the string immediately following `John` causing compilation errors
 
 ### Result (with extension) :thumbsup:
 
@@ -89,9 +102,11 @@ const abc = `<text property="\${donteval}" folder="C:\\temp"/>
 <name first='John\`s' last="Tools"/>`;
 ```
 
-* The `${donteval}` exists as verbatim text and will not look for a variable named `donteval`
-* Does not replace part of the path with a `TAB`
-* The string ends where expected
+:heavy_check_mark: The `${donteval}` exists as verbatim text and will not look for a variable named `donteval`
+
+:heavy_check_mark: Does not replace part of the path with a `TAB`
+
+:heavy_check_mark: The string ends where expected :astonished:
 
 ### Example 2.
 
@@ -106,9 +121,11 @@ const def = "<text property="${donteval}" folder="C:\temp"/>
 <name first='John`s' last="Tools"/>"
 ```
 
-* Breaks the string immediately following `property=` (and several other places) causing compilation errors
-* Adds a line break causing additional compilation errors
-* Replaces `\t` in the `C:\\temp` path with a literal `TAB`
+:heavy_multiplication_x: Breaks the string immediately following `property=` (and several other places) causing compilation errors
+
+:heavy_multiplication_x: Adds a line break causing additional compilation errors
+
+:heavy_multiplication_x: Replaces `\t` in the `C:\\temp` path with a literal `TAB`
 
 ### Result (with extension) :thumbsup:
 
@@ -116,15 +133,12 @@ const def = "<text property="${donteval}" folder="C:\temp"/>
 const def = "<text property=\"${donteval}\" path=\"C:\\temp\"/>\n<name first='John`s' last=\"Tools\"/>";
 ```
 
-* Escapes all quotes and backslashes (` \ `)
-* Escapes the line break with `\n` (or `\r\n` if that were on the clipboard)
-* The string ends where expected
+:heavy_check_mark: Escapes all quotes and backslashes (` \ `)
+
+:heavy_check_mark: Escapes the line break with `\n` (or `\r\n` if that were on the clipboard)
+
+:heavy_check_mark: The string ends where expected
 
 # License
 
-* All code - [MIT](LICENSE)
-* Icon `paste.png` - [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) see below for attribution.
-
-## Icon Attribution
-
-Special thanks to [game-icons.net](http://game-icons.net) for providing free high-quality icons like the [paint-bucket](http://game-icons.net/delapouite/originals/paint-bucket.html) used for the logo of this project.
+[MIT](LICENSE)

@@ -1,9 +1,9 @@
 {
     "name": "paste-escaped",
-    "displayName": "Paste Escaped",
+    "displayName": "TypeScript Semantic Paste",
     "version": "0.0.2",
     "publisher": "gwicksted",
-    "description": "Paste into TypeScript code with escapes based on cursor position",
+    "description": "Escapes pasted text based on where the cursor is positioned",
     "author": {
         "name": "Graeme Wicksted"
     },
