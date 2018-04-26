@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.0 - April 26, 2018
+
+* (security) Received a security warning regarding hoek dependency in package-lock.json; updated all npm dependencies
+* (dependencies) Updated all dependencies
+* (docs) Added logo source PDN
+* (feature) Now supports JSON and JavaScript contexts as well as TypeScript and TypeScript-React
+
 ## v1.0.0 - December 1, 2017
 
 * (runtime) Compiles to ES2017 (native async/await and modules) bumping required vscode version to `1.1.8`
