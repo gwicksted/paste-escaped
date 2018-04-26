@@ -20,9 +20,9 @@ const getConfig = (): IConfig => {
     return {
         // editor.formatOnPaste currently is not able to be accessed without inspect? (otherwise gets an error)
         formatOnPaste: bestValue(Boolean, "editor", "formatOnPaste") as boolean,
+        resolvedTypeScript: require.resolve("typescript"),
         selectAfter: config.get("selectAfter", true),
-        typeScript: bestValue(String, "typescript", "tsdk") as string,
-        resolvedTypeScript: require.resolve("typescript")
+        typeScript: bestValue(String, "typescript", "tsdk") as string
     };
 };
 
@@ -105,6 +105,8 @@ export const activate = (context: ExtensionContext): void => {
     disposables.push(commands.registerCommand("pasteEscaped.action", (): void => {
         pasteEscaped(vscode.window.activeTextEditor).then((): void => {
             log.trace("escaped paste");
+        }).catch((reason): void => {
+            log.trace(`error escaping paste: ${reason}`);
         });
     }));
 

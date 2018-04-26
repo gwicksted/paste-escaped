@@ -2,15 +2,33 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "ES2017",
+        "moduleResolution": "node",
         "outDir": "out",
+        "isolatedModules": false,
+        "emitDecoratorMetadata": false,
+        "declaration": false,
+        "noEmitHelpers": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
         "sourceMap": true,
+        "alwaysStrict": true,
+        "pretty": true,
         "rootDir": ".",
         "preserveConstEnums": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "strictNullChecks": false,
         "importHelpers": false,
-        "removeComments": true
+        "skipLibCheck": true,
+        "allowUnusedLabels": false,
+        "noFallthroughCasesInSwitch": true,
+        "removeComments": true,
+        "noLib": false,
+        "types": [
+            "vscode",
+            "node"
+        ]
     },
     "include": [
         "./src/**/*"

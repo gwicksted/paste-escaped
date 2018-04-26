@@ -84,7 +84,7 @@ const escapeRegularExpressionLiteral = (text: string): string => {
     });
 };
 
-export const escape = (text: string, mode: tscontext.Context): string => {
+export const escape = (text: string, mode: tscontext.Context): string | undefined => {
     switch (mode) {
         case tscontext.Context.quote:
             return escapeQuoted(text);

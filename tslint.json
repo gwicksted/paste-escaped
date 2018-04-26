@@ -100,7 +100,7 @@
     //"no-mergeable-namespace": true,
     "no-misused-new": true,
     //"no-irregular-whitespace": true, // UTF-8 BOM
-    "no-non-null-assertion": true,
+    "no-non-null-assertion": false,
     "no-null-keyword": true,
     "no-reference": true,
     "no-reference-import": true,
@@ -127,7 +127,7 @@
     "no-var-keyword": true,
     "no-var-requires": true,
     "no-void-expression": [ true, "ignore-arrow-function-shorthand" ],
-    "object-literal-sort-keys": true,
+    "object-literal-sort-keys": false,
     //"object-literal-shorthand": true,
     //"object-literal-key-quotes": true,
     "prefer-object-spread": true,
@@ -185,11 +185,10 @@
         "variable-declaration": "space"
       }
     ],
-    "typeof-compare": true,
     "use-default-type-parameter": true,
     "use-isnan": true,
     //"strict-type-predicates": true,
-    "strict-boolean-expressions": [true, "allow-null-union", "allow-undefined-union"],
+    "strict-boolean-expressions": false,
     /*"use-strict": [
       true,
       "check-module",
@@ -231,7 +230,7 @@
     ],
     "switch-final-break": [ true, "always" ],
     "deprecation": true,
-    "restrict-plus-operands": true,
+    "restrict-plus-operands": false, // currently broken
     "no-submodule-imports": true,
     "no-string-throw": true,
     "no-sparse-arrays": true,
