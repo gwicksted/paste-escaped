@@ -27,7 +27,7 @@ const getConfig = (): IConfig => {
 };
 
 const isTypeScript = (document: TextDocument): boolean => {
-    return document.languageId === "typescript" || document.languageId === "typescriptreact" || document.languageId === "javascript" || document.languageId === "json";
+    return ["typescript", "typescriptreact", "javascript", "json", "html"].includes(document.languageId);
 };
 
 const pasteEscaped = async (editor: TextEditor): Promise<void> => {
