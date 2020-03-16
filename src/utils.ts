@@ -30,7 +30,7 @@ export const getEnd = (appendedText: string, start: Position): Position => {
 
 export type Maybe<T> = T | undefined;
 
-export const coalesce = <T>(ctor: { new(): T; } , ...args: Maybe<T>[]): T => {
+export const coalesce = <T>(ctor: new() => T , ...args: Maybe<T>[]): T => {
     for (const arg of args) {
         if (arg !== undefined) {
             return arg;
@@ -40,7 +40,7 @@ export const coalesce = <T>(ctor: { new(): T; } , ...args: Maybe<T>[]): T => {
     return new ctor();
 };
 
-export const bestValue = <T>(ctor: { new(): T; }, section: string, key: string): T => {
+export const bestValue = <T>(ctor: new() => T, section: string, key: string): T => {
     const config = workspace.getConfiguration(section);
     const setting = config.inspect(key);
     return coalesce(ctor, setting.workspaceValue, setting.workspaceFolderValue, setting.globalValue, setting.defaultValue);

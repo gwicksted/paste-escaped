@@ -114,7 +114,6 @@
     "no-unnecessary-initializer": true,
     //"no-unreachable": true,
     "no-unused-expression": true,
-    "no-unused-variable": true,
     "no-unnecessary-qualifier": true,
     "no-unsafe-finally": true,
     "no-unsafe-any": false,
@@ -123,7 +122,6 @@
       { "allowed-names": [ "^self$", "^thisclass$" ] }
     ],
     "no-unbound-method": [ true, "ignore-static" ],
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "no-var-requires": true,
     "no-void-expression": [ true, "ignore-arrow-function-shorthand" ],
