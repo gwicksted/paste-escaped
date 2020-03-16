@@ -1,10 +1,12 @@
 # Changelog
 
-## v1.2.0 - March 16, 2020
+## v1.3.0 - March 16, 2020
 
 * (security) Updated packages
 * (dependencies) Updated all dependencies
 * (code) TSLint minor fixes
+
+## v1.2.0
 
 ## v1.1.0 - April 26, 2018
 

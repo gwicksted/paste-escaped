@@ -1,7 +1,7 @@
 {
     "name": "paste-escaped",
     "displayName": "TypeScript Semantic Paste",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "publisher": "gwicksted",
     "description": "Escapes pasted text based on where the cursor is positioned",
     "author": {
