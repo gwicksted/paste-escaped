@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.2.0 - March 16, 2020
+
+* (security) Updated packages
+* (dependencies) Updated all dependencies
+* (code) TSLint minor fixes
+
 ## v1.1.0 - April 26, 2018
 
 * (security) Received a security warning regarding hoek dependency in package-lock.json; updated all npm dependencies
