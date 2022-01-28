@@ -5,3 +5,5 @@ tslint.json
 **/*.map
 *.vsix
 **/*.ts
+node_modules
+!node_modules/typescript

@@ -2,8 +2,24 @@
 
 import * as tscontext from "./tscontext";
 
-const escapeDoubleQuoted = (text: string): string => {
-    return text.replace(/["\\\n\r]/g, (match: string): string => {
+const tab: number = 9;
+
+const escapeSpecialCharacter = (c: string): string => {
+
+    const charCode = c.charCodeAt(0);
+    if (charCode !== tab) {
+
+        const ch = charCode.toString(16);
+        const hex = "0000".substring(0, 4 - ch.length) + ch;
+
+        return `\\u${hex}`;
+    }
+
+    return c;
+};
+
+const escapeDoubleQuoted = (text: string, escapeNonAnsi7: boolean): string => {
+    return text.replace(/["\\\n\r\u0000-\u0019\u007f-\uffff]/g, (match: string): string => {
         switch (match) {
             case "\"":
                 return "\\\"";
@@ -14,13 +30,13 @@ const escapeDoubleQuoted = (text: string): string => {
             case "\n":
                 return "\\n";
             default:
-                throw new Error(`Unexpected match '${match}'`);
+                return escapeNonAnsi7 ? escapeSpecialCharacter(match) : match;
         }
     });
 };
 
-const escapeQuoted = (text: string): string => {
-    return text.replace(/['\\\n\r]/g, (match: string): string => {
+const escapeQuoted = (text: string, escapeNonAnsi7: boolean): string => {
+    return text.replace(/['\\\n\r\u0000-\u0019\u007f-\uffff]/g, (match: string): string => {
         switch (match) {
             case "'":
                 return "\\'";
@@ -31,13 +47,13 @@ const escapeQuoted = (text: string): string => {
             case "\n":
                 return "\\n";
             default:
-                throw new Error(`Unexpected match '${match}'`);
+                return escapeNonAnsi7 ? escapeSpecialCharacter(match) : match;
         }
     });
 };
 
-const escapeTemplateLiteral = (text: string): string => {
-    return text.replace(/[`$\\]/g, (match: string): string => {
+const escapeTemplateLiteral = (text: string, escapeNonAnsi7: boolean): string => {
+    return text.replace(/[`$\\\u0000-\u0019\u007f-\uffff]/g, (match: string): string => {
         switch (match) {
             case "`":
                 return "\\`";
@@ -46,12 +62,12 @@ const escapeTemplateLiteral = (text: string): string => {
             case "\\":
                 return "\\\\";
             default:
-                return match;
+                return escapeNonAnsi7 ? escapeSpecialCharacter(match) : match;
         }
     });
 };
 
-const escapeRegularExpressionLiteral = (text: string): string => {
+const escapeRegularExpressionLiteral = (text: string, escapeNonAnsi7: boolean): string => {
     // TODO: contextual escaping
     // context = character group:
     //   beginning of expression (if first char) ^
@@ -72,29 +88,47 @@ const escapeRegularExpressionLiteral = (text: string): string => {
     // what about collapsing whitespace into \s+ or \s* (convenience setting)
     // what about trimming leading/trailing whitespace (convenience setting)
 
-    return text.replace(/[-\/\\^$*+?.()|[\]{}\n\r]/g, (match: string): string => {
+    return text.replace(/[-\/\\^$*+?.()|[\]{}\n\r\u0000-\u0019\u007f-\uffff]/g, (match: string): string => {
         switch (match) {
             case "\r":
                 return "\\r";
             case "\n":
                 return "\\n";
-            default:
+            case "-":
+            case "/":
+            case "\\":
+            case "^":
+            case "$":
+            case "*":
+            case "+":
+            case "?":
+            case ".":
+            case "(":
+            case ")":
+            case "|":
+            case "[":
+            case "]":
+            case "{":
+            case "}":
                 return "\\" + match;
+
+            default:
+                return escapeNonAnsi7 ? escapeSpecialCharacter(match) : match;
         }
     });
 };
 
-export const escape = (text: string, mode: tscontext.Context): string | undefined => {
+export const escape = (text: string, mode: tscontext.Context, escapeNonAnsi7: boolean): string | undefined => {
     switch (mode) {
         case tscontext.Context.quote:
-            return escapeQuoted(text);
+            return escapeQuoted(text, escapeNonAnsi7);
         case tscontext.Context.doubleQuote:
-            return escapeDoubleQuoted(text);
+            return escapeDoubleQuoted(text, escapeNonAnsi7);
         // aka template literals or string interpolation
         case tscontext.Context.backQuote:
-            return escapeTemplateLiteral(text);
+            return escapeTemplateLiteral(text, escapeNonAnsi7);
         case tscontext.Context.regularExpression:
-            return escapeRegularExpressionLiteral(text);
+            return escapeRegularExpressionLiteral(text, escapeNonAnsi7);
         default:
             // intentionally does not reformat sub-fragments as existing code is likely already escaped
             // same if the pasted code contains surrounding quote marks

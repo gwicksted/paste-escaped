@@ -43,5 +43,5 @@ export const coalesce = <T>(ctor: new() => T , ...args: Maybe<T>[]): T => {
 export const bestValue = <T>(ctor: new() => T, section: string, key: string): T => {
     const config = workspace.getConfiguration(section);
     const setting = config.inspect(key);
-    return coalesce(ctor, setting.workspaceValue, setting.workspaceFolderValue, setting.globalValue, setting.defaultValue);
+    return coalesce<T>(ctor, setting.workspaceValue as T, setting.workspaceFolderValue as T, setting.globalValue as T, setting.defaultValue as T);
 };

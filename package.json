@@ -1,7 +1,7 @@
 {
     "name": "paste-escaped",
     "displayName": "TypeScript Semantic Paste",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "publisher": "gwicksted",
     "description": "Escapes pasted text based on where the cursor is positioned",
     "author": {
@@ -17,7 +17,7 @@
         "theme": "light"
     },
     "engines": {
-        "vscode": "^1.1.36",
+        "vscode": "^1.62.1",
         "node": ">=8.0.0",
         "npm": ">=5.3.0"
     },
@@ -43,6 +43,21 @@
                 "category": "Paste"
             }
         ],
+        "configuration": {
+            "title": "Paste Escaped",
+            "properties": {
+                "pasteEscaped.selectAfter": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Highlight the pasted text after pasting."
+                },
+                "pasteEscaped.escapeNonAnsi7": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Perform unicode escape sequences on characters outside of the ANSI-7 printable to prevent Latin-1 (ISO-8859-1) encoding issues if served via a webserver."
+                }
+            }
+        },
         "keybindings": [
             {
                 "key": "ctrl+shift+v",
@@ -59,16 +74,21 @@
         "vsix": "vsce package",
         "watch": "tsc -watch -p ./",
         "compile": "tsc -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "tslint": "tslint -p . -c tslint.json src/*.ts --"
+        "lint": "eslint src/*.ts --"
     },
     "devDependencies": {
-        "@types/node": "^13.9.1",
-        "eslint": "^6.8.0",
-        "tslint": "^6.1.0",
-        "vscode": "^1.1.36"
+        "@types/node": "^17.0.13",
+        "@types/vscode": "^1.62.1",
+        "@typescript-eslint/eslint-plugin": "^5.10.1",
+        "@typescript-eslint/eslint-plugin-tslint": "^5.10.1",
+        "@typescript-eslint/parser": "^5.10.1",
+        "eslint": "^8.7.0",
+        "eslint-plugin-import": "^2.25.4",
+        "eslint-plugin-jsdoc": "^37.7.0",
+        "eslint-plugin-no-null": "^1.0.2",
+        "eslint-plugin-prefer-arrow": "^1.2.3"
     },
     "dependencies": {
-        "typescript": "^3.8.3"
+        "typescript": "^4.5.5"
     }
 }

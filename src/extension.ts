@@ -10,6 +10,7 @@ import { bestValue, cursorStart, cursorEnd, getEnd } from "./utils";
 interface IConfig {
     readonly formatOnPaste: boolean;
     readonly selectAfter: boolean;
+    readonly escapeNonAnsi7: boolean;
     readonly typeScript: string;
     readonly resolvedTypeScript: string;
 }
@@ -22,6 +23,8 @@ const getConfig = (): IConfig => {
         formatOnPaste: bestValue(Boolean, "editor", "formatOnPaste") as boolean,
         resolvedTypeScript: require.resolve("typescript"),
         selectAfter: config.get("selectAfter", true),
+        escapeNonAnsi7: config.get("escapeNonAnsi7", true),
+
         typeScript: bestValue(String, "typescript", "tsdk") as string
     };
 };
@@ -67,11 +70,11 @@ const pasteEscaped = async (editor: TextEditor): Promise<void> => {
     let replace: string;
 
     try {
-        replace = tsescape.escape(document.getText(range), mode);
+        replace = tsescape.escape(document.getText(range), mode, cfg.escapeNonAnsi7);
     } catch (e) {
         // paste already occurred normally, leave it at that.
         replace = undefined;
-        log.error("Error encountered while escaping", e);
+        log.error("Error encountered while escaping", e as Error);
     }
 
     if (replace) {
@@ -89,7 +92,7 @@ const pasteEscaped = async (editor: TextEditor): Promise<void> => {
             await commands.executeCommand("editor.action.formatSelection");
         } catch (e) {
             // do nothing (throws if no configured selection formatter)
-            log.error("Error encountered while formatting", e);
+            log.error("Error encountered while formatting", e as Error);
         }
     } else if (!cfg.selectAfter) {
         editor.selection = new Selection(end, end);

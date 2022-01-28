@@ -17,25 +17,49 @@ const getTimestamp = (): string => {
 
 type Logger = (message: string) => void;
 
-// tslint:disable:no-console
+/* eslint-disable no-console */
 const loggerFor = (level: keyof typeof levels): Logger => {
     switch (level) {
         case "trace":
-            return (message: string): void => { if (levels.trace) { console.log(message); } };
+            return (message: string): void => {
+                if (levels.trace) {
+                    console.log(message);
+                }
+            };
         case "debug":
-        return (message: string): void => { if (levels.debug) { console.log(message); } };
+            return (message: string): void => {
+                if (levels.debug) {
+                    console.log(message);
+                }
+            };
         case "info":
-            return (message: string): void => { if (levels.info) { console.log(message); } };
+            return (message: string): void => {
+                if (levels.info) {
+                    console.log(message);
+                }
+            };
         case "warn":
-            return (message: string): void => { if (levels.warn) { console.log(message); } };
+            return (message: string): void => {
+                if (levels.warn) {
+                    console.log(message);
+                }
+            };
         case "error":
         case "fatal":
-            return (message: string): void => { if (levels.error) { console.log(message); } };
+            return (message: string): void => {
+                if (levels.error) {
+                    console.log(message);
+                }
+            };
         default:
-            return (message: string): void => { if (levels.log) { console.log(message); } };
+            return (message: string): void => {
+                if (levels.log) {
+                    console.log(message);
+                }
+            };
     }
 };
-// tslint:enable:no-console
+/* eslint-enable no-console */
 
 const extensionLog = (file: string, message: string, level: keyof typeof levels, reason?: Error | string): void => {
     let exceptionDetails: string = "";

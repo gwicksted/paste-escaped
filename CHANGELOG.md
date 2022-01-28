@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.0 - January 27, 2022
+
+* (security) Updated packages
+* (dependencies) Updated all dependencies
+* (feature) Encodes non-printable characters with unicode escape sequences
+* (docs) Package-defined configurations
+
 ## v1.3.0 - March 16, 2020
 
 * (security) Updated packages

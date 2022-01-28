@@ -39,7 +39,6 @@ _(escapes pasted text based on where the cursor is positioned)_
 
 ### Command Pallette
 
-
 | Windows / Linux    | Mac               |
 | ------------------ | ----------------- |
 | `ctrl`+`shift`+`p` | `cmd`+`shift`+`p` |
